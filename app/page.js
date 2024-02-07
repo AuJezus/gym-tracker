@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="row">
+    <div className="row max-w-xl mx-auto mt-12">
       <div className="col-6">
         <h1 className="header">Supabase Auth + Storage</h1>
         <p>
