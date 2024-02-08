@@ -15,6 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 function WorkoutCreatePage() {
   const [sets, setSets] = useState([]);
@@ -22,6 +23,8 @@ function WorkoutCreatePage() {
   const [description, setDescription] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const disableSave = isSaving || sets.length < 1 || !name;
+
+  const router = useRouter();
 
   const addNewSet = (exercise) => {
     setSets((sets) => [...sets, { exercise, reps: 0, weight: 0 }]);
@@ -67,7 +70,10 @@ function WorkoutCreatePage() {
       .select()
       .limit(1)
       .single();
-    if (workoutErr) console.error(workoutErr);
+    if (workoutErr) {
+      console.error(workoutErr);
+      return;
+    }
 
     const workoutSets = sets.map((set) => ({
       workout_id: workoutData.id,
@@ -79,7 +85,12 @@ function WorkoutCreatePage() {
     const { error: setsError } = await supabase
       .from("workout-sets")
       .insert(workoutSets);
-    if (setsError) console.error(setsError);
+    if (setsError) {
+      console.error(setsError);
+      return;
+    }
+
+    router.push("/app");
   };
 
   return (
