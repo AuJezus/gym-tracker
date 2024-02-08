@@ -19,6 +19,12 @@ function ExerciseAddModal({ onAdd }) {
   const supabase = createClientComponentClient();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const [open, setOpen] = useState(false);
+
+  const addExercise = (exercise) => {
+    onAdd(exercise);
+    setOpen(false);
+  };
 
   useEffect(() => {
     async function queryData() {
@@ -39,7 +45,7 @@ function ExerciseAddModal({ onAdd }) {
   }, [query, supabase]);
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">Add set</Button>
       </DialogTrigger>
@@ -51,10 +57,18 @@ function ExerciseAddModal({ onAdd }) {
           </DialogDescription>
         </DialogHeader>
         <Input value={query} onChange={(e) => setQuery(e.target.value)} />
-        <ScrollArea className="max-h-64 rounded-md border">
-          {results.map((exercise) => (
-            <div key={exercise.id}>{exercise.name}</div>
-          ))}
+        <ScrollArea className="max-h-96 rounded-md border">
+          <div className="divide-y-2">
+            {results.map((exercise) => (
+              <div
+                key={exercise.id}
+                onClick={() => addExercise(exercise)}
+                className="flex cursor-pointer p-2 hover:bg-accent"
+              >
+                {exercise.name}
+              </div>
+            ))}
+          </div>
         </ScrollArea>
       </DialogContent>
     </Dialog>
