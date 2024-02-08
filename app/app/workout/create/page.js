@@ -66,7 +66,7 @@ function WorkoutCreatePage() {
     };
 
     const { data: workoutData, error: workoutErr } = await supabase
-      .from("workouts")
+      .from("workout-templates")
       .insert(workout)
       .select()
       .limit(1)
@@ -77,14 +77,14 @@ function WorkoutCreatePage() {
     }
 
     const workoutSets = sets.map((set) => ({
-      workout_id: workoutData.id,
+      workout_template_id: workoutData.id,
       exercise_id: set.exercise.id,
       reps: Number(set.reps),
       weight: Number(set.weight),
     }));
 
     const { error: setsError } = await supabase
-      .from("workout-sets")
+      .from("set-templates")
       .insert(workoutSets);
     if (setsError) {
       console.error(setsError);
