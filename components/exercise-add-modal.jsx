@@ -38,7 +38,6 @@ function ExerciseAddModal({ onAdd }) {
         setResults([]);
       }
 
-      console.log(data);
       setResults(data || []);
     }
     queryData();

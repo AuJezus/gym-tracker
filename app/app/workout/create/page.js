@@ -27,11 +27,11 @@ function WorkoutCreatePage() {
   const router = useRouter();
 
   const addNewSet = (exercise) => {
-    setSets((sets) => [...sets, { exercise, reps: 0, weight: 0 }]);
+    setSets((sets) => [...sets, { exercise, reps: "0", weight: "0" }]);
   };
 
   const copyLastSet = () => {
-    setSets((sets) => [...sets, sets.at(-1)]);
+    setSets((sets) => [...sets, { ...sets.at(-1) }]);
   };
 
   const setReps = (index, amount) => {
@@ -57,6 +57,7 @@ function WorkoutCreatePage() {
   };
 
   const saveWorkout = async () => {
+    setIsSaving(true);
     const supabase = createClientComponentClient();
 
     const workout = {
@@ -90,6 +91,7 @@ function WorkoutCreatePage() {
       return;
     }
 
+    setIsSaving(false);
     router.push("/app");
   };
 
